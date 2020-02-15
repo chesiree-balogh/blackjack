@@ -29,31 +29,22 @@ namespace blackjack
 
 
 
-      // 
+      //this is the creation of pairing a suit with a rank and adding that to the deck
       for (int i = 0; i < cardsSuits.Count; i++)
       {
-
         for (int j = 0; j < cardFaces.Count; j++)
         {
           var card = new Card();
           card.Rank = cardFaces[j];
           card.Suit = cardsSuits[i];
-          if (card.Suit == "diamonds" || card.Suit == "hearts")
-          {
-            card.ColorOfTheCard = "red";
-          }
-          else
-          {
-            card.ColorOfTheCard = "black";
-          }
+
           deck.Add(card);
-          newCard = ($"{cardFaces[j]} of {cardsSuits[i]}");
         }
       }
 
 
 
-      //
+      //this is where the created deck is being shuffled
       Random rnd = new Random();
 
       for (int z = deck.Count - 1; z >= 1; z--)
@@ -64,7 +55,7 @@ namespace blackjack
         deck[z] = temp;
       }
 
-
+      //List< >() is the syntex for LIST
       //bucket for dealers dealt cards
       var dealerHand = new List<Card>();
 
@@ -89,10 +80,14 @@ namespace blackjack
       deck.RemoveAt(0);
       deck.RemoveAt(0);
 
+
       //display the players hand
       Console.WriteLine($"Your first card is {playerHand[0].DisplayCards()}, and your second card is {playerHand[1].DisplayCards()}.");
 
 
+
+      //should I nest this is a while loop???
+      //while players hang is < 21 if >21 BUST
       // give the player their total
       var playerTotal = 0;
       for (int i = 0; i < playerHand.Count; i++)
@@ -103,33 +98,52 @@ namespace blackjack
 
 
       //create option to hit or stay.... and if they bust over 21
-      Console.WriteLine("Do you want to: (H)-Hit or (S)-Stand?");
+      Console.WriteLine("Do you want to: (h)-Hit or (s)-Stand?");
 
       //players response 
       var input = Console.ReadLine().ToLower();
 
-
       //add another card to player hand
+      if (input == "h")
+      {
+        Console.WriteLine("your new card is: ");
+      }
+
+      var newPlayersCard = new List<Card>();
+      newPlayersCard.Add(deck[0]);
+      deck.RemoveAt(0);
+      Console.WriteLine($"{newPlayersCard[0].DisplayCards()}");
+
+
+      //give player their new total
+      var newPlayerTotal = 0;
+      for (int i = 0; i < newPlayersCard.Count; i++)
+      {
+        newPlayerTotal += newPlayersCard[i].GetCardValue();
+      }
+
+      var combineTotal = newPlayerTotal + playerTotal;
+      Console.WriteLine($"Giving you a total of:  {combineTotal}");
 
 
       //else if "Stand" show dealers hand 
 
 
-      //add while loop for if plays hand is under 21 is in game 
-      //and if go over bust automatically loses game
       //if bust don't display dealers hand, Display "You busted, Dealer won"
 
 
       //if player didn't bust, distplay dealers cards value
 
 
-      //have dealer hit/stand till 17 or highter
+      //have dealer hit/stand till 17 or highter in a loop
 
 
       //if player didn't bust but dealer did display "Dealer busted, YOU win!"
 
 
       //play again option, While Loop
+
+      //while (condition) player>dealer player won
 
 
       //reshuffles full new deck
