@@ -80,36 +80,56 @@ namespace blackjack
         playerHand.Add(deck[0]);
         playerHand.Add(deck[1]);
 
+        //this is hard coding which cards player recieved to test funcinallity 
+        // var tempCard = new Card();
+        // var tempCard2 = new Card();
+
+        // tempCard.Rank = "ace";
+        // tempCard.Suit = "hearts";
+
+        // tempCard2.Rank = "king";
+        // tempCard2.Suit = "hearts";
+
+        // playerHand.Add(tempCard);
+        // playerHand.Add(tempCard2);
+
         //remover players dealt cards from full deck
         deck.RemoveAt(0);
         deck.RemoveAt(0);
 
 
-        //display the players hand
+        //this displays the players cards
         Console.WriteLine($"Your first card is {playerHand[0].DisplayCards()}, and your second card is { playerHand[1].DisplayCards() }.");
 
 
 
-        // give the player their total
-        var playerTotal = 0;
+        //this takes their two cards values and adds them together
+        var newPlayerTotal = 0;
         for (int i = 0; i < playerHand.Count; i++)
         {
-          playerTotal += playerHand[i].GetCardValue();
+          newPlayerTotal += playerHand[i].GetCardValue();
         }
-        Console.WriteLine($"Giving you a total of:  {playerTotal}");
+        Console.WriteLine($"Giving you a total of:  {newPlayerTotal}");
 
 
         //should I nest this is a while loop???
         //while players hang is < 21 if >21 BUST
+        //leaving var input as an empty string... cuz if you put console.readline its waiting for a response
+        var input = "";
+        //newPlayerTotal = 0;
+        // var combineTotal = newPlayerTotal + playerTotal;
+        //var newDealerTotal = 0;
 
-        var newPlayerTotal = 0;
-        var combineTotal = newPlayerTotal + playerTotal;
-        var newDealerTotal = 0;
-        newDealerTotal = 0;
         var dealerTotal = 0;
-        var dealerCombineTotal = newDealerTotal + dealerTotal;
+        //var dealerCombineTotal = newDealerTotal + dealerTotal;
 
-        while (continuePlay && combineTotal <= 20)
+
+        // for (int i = 0; i < playerHand.Count; i++)
+        // {
+
+        //   newPlayerTotal += playerHand[i].GetCardValue();
+        // }
+        if (newPlayerTotal < 21)
         {
 
 
@@ -117,86 +137,100 @@ namespace blackjack
           Console.WriteLine("Do you want to: (h)-Hit or (s)-Stand?");
 
           //players response 
-          var input = Console.ReadLine().ToLower();
+          input = Console.ReadLine().ToLower();
 
 
           //add another card to player hand
-          if (input == "h")
+          while (input == "h" && newPlayerTotal < 21)
           {
             Console.WriteLine("your new card is: ");
 
-            var newPlayersCard = new List<Card>();
-            newPlayersCard.Add(deck[0]);
+
+            playerHand.Add(deck[0]);
             deck.RemoveAt(0);
-            Console.WriteLine($"{newPlayersCard[0].DisplayCards()}");
+            Console.WriteLine($"{playerHand[playerHand.Count - 1].DisplayCards()}");
 
-
-            //give player their new total
+            //adding new card into player hand for their new total
             newPlayerTotal = 0;
-            for (int i = 0; i < newPlayersCard.Count; i++)
+            for (int i = 0; i < playerHand.Count; i++)
+            {
+              newPlayerTotal += playerHand[i].GetCardValue();
+            }
+            Console.WriteLine($"Giving you a total of:  {newPlayerTotal}");
+            if (newPlayerTotal <= 20)
+            {
+              //combineTotal = newPlayerTotal + playerTotal;
+              Console.WriteLine("Do you want to: (h)-Hit or (s)-Stand?");
+              //players response 
+              input = Console.ReadLine().ToLower();
+            }
 
-              newPlayerTotal += newPlayersCard[i].GetCardValue();
-
-
-            combineTotal = newPlayerTotal + playerTotal;
-            Console.WriteLine($"Giving you a total of:  {combineTotal}");
           }
-          if (combineTotal > 21)
+          // if (newPlayerTotal == 21)
+          // {
+          //   Console.WriteLine("BlackJack!");
+          //   continuePlay = true;
+          // }
+          if (newPlayerTotal > 21)
           {
             Console.WriteLine("Bust! Dealer wins");
             continuePlay = false;
           }
 
-
-          while (continuePlay && input == "s")
-          {
-            Console.WriteLine("Dealers play.");   // && dealerTotal <17 ???
-
-            //else if "Stand" show dealers hand 
-            Console.WriteLine($"Dealer has a {dealerHand[0].DisplayCards()}, and {dealerHand[1].DisplayCards()}.");
-
-            dealerTotal = 0;
-            //make it that is dealers original hand is > 17 not to hit then pick winner
-            if (dealerTotal > 17)
-            {
-
-            }
-            //if dealers hand is < 17 add card
-            else if (dealerTotal < 17)
-
-              //dealerTotal = 0;
-              for (int i = 0; i < dealerHand.Count; i++)
-              {
-                dealerTotal += dealerHand[i].GetCardValue();
-              }
-            Console.WriteLine($"dealers total: {dealerTotal}");
-
-            // adds card to dealer hand
-            var newDealerCard = new List<Card>();
-            newDealerCard.Add(deck[0]);
-            deck.RemoveAt(0);
-
-            Console.WriteLine($"{newDealerCard[0].DisplayCards()}");
-
-            //new dealer total
-            newDealerTotal = 0;
-            for (int i = 0; i < newDealerCard.Count; i++)
-            {
-              newDealerTotal += newDealerCard[i].GetCardValue();
-            }
-
-            dealerCombineTotal = newDealerTotal + dealerTotal;
-            Console.WriteLine($"Dealers new total {dealerCombineTotal}");
-            if (dealerCombineTotal > 21)
-            {
-              Console.WriteLine($"Dealer bust!");
-              continuePlay = false;
-            }
-
-          }
         }
 
-        //if bust don't display dealers hand, Display "You busted, Dealer won"
+        if (newPlayerTotal <= 21)
+        {
+          Console.WriteLine("Dealers play.");   // && dealerTotal <17 ???
+
+          //else if "Stand" show dealers hand 
+          Console.WriteLine($"Dealer has a {dealerHand[0].DisplayCards()}, and {dealerHand[1].DisplayCards()}.");
+
+          dealerTotal = 0;
+          for (int i = 0; i < dealerHand.Count; i++)
+          {
+            dealerTotal += dealerHand[i].GetCardValue();
+          }
+          Console.WriteLine($"Giving dealer total of:  {dealerTotal}");
+
+
+          while (dealerTotal < 17)
+          {
+            //adds card to dealer hand
+
+            dealerHand.Add(deck[0]);
+            deck.RemoveAt(0);
+
+            Console.WriteLine($"{dealerHand[dealerHand.Count - 1].DisplayCards()}");
+
+            //new dealer total
+            dealerTotal = 0;
+            for (int i = 0; i < dealerHand.Count; i++)
+            {
+              dealerTotal += dealerHand[i].GetCardValue();
+            }
+
+
+            Console.WriteLine($"Dealers new total {dealerTotal}");
+          }
+        }
+        //if dealer busts
+        if (dealerTotal > 21)
+        {
+          Console.WriteLine($"Dealer bust! You win!");
+          continuePlay = false;
+        }
+        else if (dealerTotal == newPlayerTotal)
+        {
+          Console.WriteLine("Tie, Dealer wins!");
+        }
+        else if (newPlayerTotal > dealerTotal)
+        {
+          Console.WriteLine("You WON!");
+        }
+
+
+        //if bust don't display dealers hand, Display "You busted, Dealer won" *DONE
 
 
         //if player didn't bust, distplay dealers cards value
@@ -214,15 +248,11 @@ namespace blackjack
         {
           break;
         }
-
-
-        //while (condition) player>dealer player won
-
-
-        //reshuffles full new deck
-
-
       }
+
+      //while (condition) player>dealer player won
+
+
     }
   }
 

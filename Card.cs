@@ -26,7 +26,7 @@ namespace blackjack
       {
         return 11;
       }
-      else if (Rank == "queen" || Rank == "kind" || Rank == "jack")
+      else if (Rank == "queen" || Rank == "king" || Rank == "jack")
       {
         return 10;
       }
